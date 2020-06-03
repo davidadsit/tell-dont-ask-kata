@@ -9,21 +9,21 @@ namespace TellDontAskKata.Tests.Doubles
     {
         private readonly List<Order> orders = new List<Order>();
 
+        public Order SavedOrder { get; private set; }
+
         public void Save(Order order)
         {
             SavedOrder = order;
         }
 
-        public Order SavedOrder { get; private set; }
-
         public Order GetById(int orderId)
         {
-            return this.orders.SingleOrDefault(order => order.Id == orderId);
+            return orders.SingleOrDefault(order => order.Id == orderId);
         }
 
         public void AddOrder(Order order)
         {
-            this.orders.Add(order);
+            orders.Add(order);
         }
     }
 }
