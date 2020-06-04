@@ -1,6 +1,6 @@
 ﻿using TellDontAskKata.Repository;
 
-namespace TellDontAskKata.UseCase
+namespace TellDontAskKata.Workflows
 {
     public class OrderApprovalWorkflow
     {

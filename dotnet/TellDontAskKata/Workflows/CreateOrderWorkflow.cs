@@ -2,7 +2,7 @@
 using TellDontAskKata.Entities;
 using TellDontAskKata.Repository;
 
-namespace TellDontAskKata.UseCase
+namespace TellDontAskKata.Workflows
 {
     public class CreateOrderWorkflow
     {
@@ -15,7 +15,7 @@ namespace TellDontAskKata.UseCase
             this.productCatalog = productCatalog;
         }
 
-        public void FromItems(IEnumerable<RequestedItem> items)
+        public void FromItems(IEnumerable<ShoppingCartItem> items)
         {
             var order = new Order();
 

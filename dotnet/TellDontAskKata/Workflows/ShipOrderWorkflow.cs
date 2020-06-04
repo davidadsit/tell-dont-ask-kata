@@ -1,9 +1,7 @@
-﻿using TellDontAskKata.Entities;
-using TellDontAskKata.Exceptions;
-using TellDontAskKata.Repository;
+﻿using TellDontAskKata.Repository;
 using TellDontAskKata.Service;
 
-namespace TellDontAskKata.UseCase
+namespace TellDontAskKata.Workflows
 {
     public class ShipOrderWorkflow
     {

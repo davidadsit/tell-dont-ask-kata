@@ -4,9 +4,9 @@ using NUnit.Framework;
 using TellDontAskKata.Entities;
 using TellDontAskKata.Repository;
 using TellDontAskKata.UnitTests.Doubles;
-using TellDontAskKata.UseCase;
+using TellDontAskKata.Workflows;
 
-namespace TellDontAskKata.UnitTests.UseCases
+namespace TellDontAskKata.UnitTests.WorkflowTests
 {
     public class CreateOrderWorkflowTest
     {
@@ -28,8 +28,8 @@ namespace TellDontAskKata.UnitTests.UseCases
         [Test]
         public void An_order_can_be_created_from_items()
         {
-            var salad = new RequestedItem {ProductName = "salad", Quantity = 2};
-            var tomato = new RequestedItem {ProductName = "tomato", Quantity = 3};
+            var salad = new ShoppingCartItem {ProductName = "salad", Quantity = 2};
+            var tomato = new ShoppingCartItem {ProductName = "tomato", Quantity = 3};
 
             createOrderWorkflow.FromItems(new[] {salad, tomato});
 
@@ -43,7 +43,7 @@ namespace TellDontAskKata.UnitTests.UseCases
         [Test]
         public void UnknownProduct()
         {
-            Assert.Throws<UnknownProductException>(() => createOrderWorkflow.FromItems(new[] {new RequestedItem {ProductName = "unknown product"}}));
+            Assert.Throws<UnknownProductException>(() => createOrderWorkflow.FromItems(new[] {new ShoppingCartItem {ProductName = "unknown product"}}));
         }
     }
 }

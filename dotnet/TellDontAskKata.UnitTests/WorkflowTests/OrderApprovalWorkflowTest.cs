@@ -2,9 +2,9 @@
 using TellDontAskKata.Entities;
 using TellDontAskKata.Exceptions;
 using TellDontAskKata.UnitTests.Doubles;
-using TellDontAskKata.UseCase;
+using TellDontAskKata.Workflows;
 
-namespace TellDontAskKata.UnitTests.UseCases
+namespace TellDontAskKata.UnitTests.WorkflowTests
 {
     public class OrderApprovalWorkflowTest
     {
