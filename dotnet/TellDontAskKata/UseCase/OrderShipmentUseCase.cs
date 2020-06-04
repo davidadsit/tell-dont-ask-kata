@@ -32,7 +32,8 @@ namespace TellDontAskKata.UseCase
             
              shipmentService.Ship(order);
 
-            order.Status = OrderStatus.Shipped;
+
+             order.Ship();
             orderRepository.Save(order);
         }
     }

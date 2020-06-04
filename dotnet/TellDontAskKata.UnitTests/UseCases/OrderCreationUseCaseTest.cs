@@ -11,9 +11,7 @@ namespace TellDontAskKata.UnitTests.UseCases
     {
         private Category food;
         private TestOrderRepository orderRepository;
-
         private IProductCatalog productCatalogue;
-
         private OrderCreationUseCase useCase;
 
         [SetUp]
@@ -30,30 +28,37 @@ namespace TellDontAskKata.UnitTests.UseCases
         public void SellMultipleItems()
         {
             var saladRequest = new SellItemRequest {ProductName = "salad", Quantity = 2};
-
             var tomatoRequest = new SellItemRequest {ProductName = "tomato", Quantity = 3};
 
-            var request =
-                new SellItemsRequest {Requests = new List<SellItemRequest> {saladRequest, tomatoRequest}};
+            var request = new SellItemsRequest
+            {
+                Requests = new List<SellItemRequest>
+                {
+                    saladRequest,
+                    tomatoRequest
+                }
+            };
 
             useCase.Run(request);
 
             var insertedOrder = orderRepository.SavedOrder;
-            Assert.AreEqual(OrderStatus.Created, insertedOrder.Status);
-            Assert.AreEqual(23.20m, insertedOrder.Total);
-            Assert.AreEqual(2.13m, insertedOrder.Tax);
-            Assert.AreEqual("EUR", insertedOrder.Currency);
-            Assert.AreEqual(2, insertedOrder.Items.Count);
-            Assert.AreEqual("salad", insertedOrder.Items[0].Product.Name);
-            Assert.AreEqual(3.56m, insertedOrder.Items[0].Product.Price);
-            Assert.AreEqual(2, insertedOrder.Items[0].Quantity);
-            Assert.AreEqual(7.84m, insertedOrder.Items[0].TaxedAmount);
-            Assert.AreEqual(0.72m, insertedOrder.Items[0].Tax);
-            Assert.AreEqual("tomato", insertedOrder.Items[1].Product.Name);
-            Assert.AreEqual(4.65m, insertedOrder.Items[1].Product.Price);
-            Assert.AreEqual(3, insertedOrder.Items[1].Quantity);
-            Assert.AreEqual(15.36m, insertedOrder.Items[1].TaxedAmount);
-            Assert.AreEqual(1.41m, insertedOrder.Items[1].Tax);
+            Assert.That(insertedOrder.Status, Is.EqualTo(OrderStatus.Created));
+            Assert.That(insertedOrder.Total, Is.EqualTo(23.20m));
+            Assert.That(insertedOrder.Tax, Is.EqualTo(2.13m));
+            Assert.That(insertedOrder.Currency, Is.EqualTo("EUR"));
+            Assert.That(insertedOrder.Items.Count, Is.EqualTo(2));
+            
+            Assert.That(insertedOrder.Items[0].Product.Name, Is.EqualTo("salad"));
+            Assert.That(insertedOrder.Items[0].Product.Price, Is.EqualTo(3.56m));
+            Assert.That(insertedOrder.Items[0].Quantity, Is.EqualTo(2));
+            Assert.That(insertedOrder.Items[0].SubTotal, Is.EqualTo(7.84m));
+            Assert.That(insertedOrder.Items[0].Tax, Is.EqualTo(0.72m));
+            
+            Assert.That(insertedOrder.Items[1].Product.Name, Is.EqualTo("tomato"));
+            Assert.That(insertedOrder.Items[1].Product.Price, Is.EqualTo(4.65m));
+            Assert.That(insertedOrder.Items[1].Quantity, Is.EqualTo(3));
+            Assert.That(insertedOrder.Items[1].SubTotal, Is.EqualTo(15.36m));
+            Assert.That(insertedOrder.Items[1].Tax, Is.EqualTo(1.41m));
         }
 
         [Test]

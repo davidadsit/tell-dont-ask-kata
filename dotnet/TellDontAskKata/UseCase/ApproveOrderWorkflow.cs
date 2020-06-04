@@ -3,16 +3,16 @@ using TellDontAskKata.Repository;
 
 namespace TellDontAskKata.UseCase
 {
-    public class OrderApprovalUseCase
+    public class ApproveOrderWorkflow
     {
         private readonly IOrderRepository orderRepository;
 
-        public OrderApprovalUseCase(IOrderRepository orderRepository)
+        public ApproveOrderWorkflow(IOrderRepository orderRepository)
         {
             this.orderRepository = orderRepository;
         }
 
-        public void Run(OrderApprovalRequest request)
+        public void Approve(OrderApprovalRequest request)
         {
             var order = orderRepository.GetById(request.OrderId);
 
@@ -21,17 +21,32 @@ namespace TellDontAskKata.UseCase
                 throw new ShippedOrdersCannotBeChangedException();
             }
 
-            if (request.Approved && order.Status == OrderStatus.Rejected)
+            if (order.Status == OrderStatus.Rejected)
             {
                 throw new RejectedOrderCannotBeApprovedException();
             }
 
-            if (!request.Approved && order.Status == OrderStatus.Approved)
+            order.Approve();
+
+            orderRepository.Save(order);
+        }
+
+        public void Reject(OrderApprovalRequest request)
+        {
+            var order = orderRepository.GetById(request.OrderId);
+
+            if (order.Status == OrderStatus.Shipped)
+            {
+                throw new ShippedOrdersCannotBeChangedException();
+            }
+
+            if (order.Status == OrderStatus.Approved)
             {
                 throw new ApprovedOrderCannotBeRejectedException();
             }
 
-            order.Status = request.Approved ? OrderStatus.Approved : OrderStatus.Rejected;
+            order.Reject();
+
             orderRepository.Save(order);
         }
     }

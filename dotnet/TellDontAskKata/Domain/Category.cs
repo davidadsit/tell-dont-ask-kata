@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace TellDontAskKata.Domain
+﻿namespace TellDontAskKata.Domain
 {
     public class Category
     {
         public string Name { get; set; }
 
-        public Decimal TaxPercentage { get; set; }
+        public decimal TaxPercentage { get; set; }
     }
 }
