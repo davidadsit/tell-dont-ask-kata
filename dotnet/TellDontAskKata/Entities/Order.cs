@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TellDontAskKata.Exceptions;
 
 namespace TellDontAskKata.Entities
 {
@@ -17,19 +18,52 @@ namespace TellDontAskKata.Entities
         public OrderStatus Status { get; private set; } = OrderStatus.Created;
         public int Id { get; }
 
-        public void Ship()
-        {
-            Status = OrderStatus.Shipped;
-        }
-
         public void Approve()
         {
-            Status = OrderStatus.Approved;
+            switch (Status)
+            {
+                case OrderStatus.Shipped:
+                    throw new ShippedOrdersCannotBeChangedException();
+                case OrderStatus.Rejected:
+                    throw new RejectedOrderCannotBeApprovedException();
+                case OrderStatus.Approved:
+                case OrderStatus.Created:
+                default:
+                    Status = OrderStatus.Approved;
+                    break;
+            }
         }
 
         public void Reject()
         {
-            Status = OrderStatus.Rejected;
+            switch (Status)
+            {
+                case OrderStatus.Shipped:
+                    throw new ShippedOrdersCannotBeChangedException();
+                case OrderStatus.Approved:
+                    throw new ApprovedOrderCannotBeRejectedException();
+                case OrderStatus.Rejected:
+                case OrderStatus.Created:
+                default:
+                    Status = OrderStatus.Rejected;
+                    break;
+            }
+        }
+
+        public void Ship()
+        {
+            switch (Status)
+            {
+                case OrderStatus.Created:
+                case OrderStatus.Rejected:
+                    throw new OrderCannotBeShippedException();
+                case OrderStatus.Shipped:
+                    throw new OrderCannotBeShippedTwiceException();
+                case OrderStatus.Approved:
+                default:
+                    Status = OrderStatus.Shipped;
+                    break;
+            }
         }
     }
 }

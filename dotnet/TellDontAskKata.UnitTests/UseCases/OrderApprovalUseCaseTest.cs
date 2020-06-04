@@ -8,15 +8,15 @@ namespace TellDontAskKata.UnitTests.UseCases
 {
     public class OrderApprovalUseCaseTest
     {
-        private ApproveOrderWorkflow approveOrderWorkflow;
-        private TestOrderRepository orderRepository;
         private Order initialOrder;
+        private OrderApprovalWorkflow orderApprovalWorkflow;
+        private TestOrderRepository orderRepository;
 
         [SetUp]
         public void SetUp()
         {
             orderRepository = new TestOrderRepository();
-            approveOrderWorkflow = new ApproveOrderWorkflow(orderRepository);
+            orderApprovalWorkflow = new OrderApprovalWorkflow(orderRepository);
 
             initialOrder = new Order(1);
         }
@@ -25,9 +25,8 @@ namespace TellDontAskKata.UnitTests.UseCases
         public void ApprovedExistingOrder()
         {
             orderRepository.AddOrder(initialOrder);
-            var request = new OrderApprovalRequest {OrderId = 1};
 
-            approveOrderWorkflow.Approve(request);
+            orderApprovalWorkflow.Approve(initialOrder.Id);
 
             Assert.AreEqual(orderRepository.SavedOrder.Status, OrderStatus.Approved);
         }
@@ -37,9 +36,8 @@ namespace TellDontAskKata.UnitTests.UseCases
         {
             initialOrder.Reject();
             orderRepository.AddOrder(initialOrder);
-            var request = new OrderApprovalRequest {OrderId = 1};
 
-            Assert.Throws<RejectedOrderCannotBeApprovedException>(() => approveOrderWorkflow.Approve(request));
+            Assert.Throws<RejectedOrderCannotBeApprovedException>(() => orderApprovalWorkflow.Approve(initialOrder.Id));
         }
 
         [Test]
@@ -47,40 +45,19 @@ namespace TellDontAskKata.UnitTests.UseCases
         {
             initialOrder.Approve();
             orderRepository.AddOrder(initialOrder);
-            var request = new OrderApprovalRequest {OrderId = 1};
 
-            Assert.Throws<ApprovedOrderCannotBeRejectedException>(() => approveOrderWorkflow.Reject(request));
+            Assert.Throws<ApprovedOrderCannotBeRejectedException>(() => orderApprovalWorkflow.Reject(initialOrder.Id));
         }
 
         [Test]
         public void RejectExistingOrder()
         {
             orderRepository.AddOrder(initialOrder);
-            var request = new OrderApprovalRequest {OrderId = 1};
 
-            approveOrderWorkflow.Reject(request);
+            orderApprovalWorkflow.Reject(initialOrder.Id);
 
             Assert.AreEqual(orderRepository.SavedOrder.Status, OrderStatus.Rejected);
         }
 
-        [Test]
-        public void ShippedOrdersCannotBeApproved()
-        {
-            initialOrder.Ship();
-            orderRepository.AddOrder(initialOrder);
-            var request = new OrderApprovalRequest {OrderId = 1};
-
-            Assert.Throws<ShippedOrdersCannotBeChangedException>(() => approveOrderWorkflow.Approve(request));
-        }
-
-        [Test]
-        public void ShippedOrdersCannotBeRejected()
-        {
-            initialOrder.Ship();
-            orderRepository.AddOrder(initialOrder);
-            var request = new OrderApprovalRequest {OrderId = 1};
-
-            Assert.Throws<ShippedOrdersCannotBeChangedException>(() => approveOrderWorkflow.Reject(request));
-        }
     }
 }

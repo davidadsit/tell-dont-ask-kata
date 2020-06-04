@@ -12,20 +12,20 @@ namespace TellDontAskKata.UnitTests.UseCases
         private Category food;
         private TestOrderRepository orderRepository;
         private IProductCatalog productCatalogue;
-        private OrderCreationUseCase useCase;
+        private OrderCreationUseCase orderCreationUseCase;
 
         [SetUp]
         public void SetUp()
         {
             orderRepository = new TestOrderRepository();
-            food = new Category {Name = "Food", TaxPercentage = new decimal(10)};
-            productCatalogue = new InMemoryProductCatalog(
-                new List<Product>
-                {
-                    new Product("salad", 3.56m, food), 
-                    new Product("tomato", 4.65m, food)
-                });
-            useCase = new OrderCreationUseCase(orderRepository, productCatalogue);
+            food = new Category ("Food", 10m);
+            var products = new List<Product>
+            {
+                new Product("salad", 3.56m, food), 
+                new Product("tomato", 4.65m, food)
+            };
+            productCatalogue = new InMemoryProductCatalog(products);
+            orderCreationUseCase = new OrderCreationUseCase(orderRepository, productCatalogue);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace TellDontAskKata.UnitTests.UseCases
 
             var request = new SellItemsRequest {Requests = new List<SellItemRequest> {saladRequest, tomatoRequest}};
 
-            useCase.Run(request);
+            orderCreationUseCase.Run(request);
 
             var insertedOrder = orderRepository.SavedOrder;
             Assert.That(insertedOrder.Status, Is.EqualTo(OrderStatus.Created));
@@ -65,7 +65,7 @@ namespace TellDontAskKata.UnitTests.UseCases
             var unknownProductRequest = new SellItemRequest {ProductName = "unknown product"};
             request.Requests.Add(unknownProductRequest);
 
-            Assert.Throws<UnknownProductException>(() => useCase.Run(request));
+            Assert.Throws<UnknownProductException>(() => orderCreationUseCase.Run(request));
         }
     }
 }

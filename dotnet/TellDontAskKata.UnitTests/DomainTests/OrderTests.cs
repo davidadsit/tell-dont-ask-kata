@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using TellDontAskKata.Entities;
+using TellDontAskKata.Exceptions;
 
 namespace TellDontAskKata.UnitTests.DomainTests
 {
@@ -60,6 +61,66 @@ namespace TellDontAskKata.UnitTests.DomainTests
         }
 
         [Test]
+        public void Cannot_approve_a_rejected_order()
+        {
+            var order = new Order();
+
+            order.Reject();
+
+            Assert.Throws<RejectedOrderCannotBeApprovedException>(() => order.Approve());
+        }
+
+        [Test]
+        public void Cannot_approve_a_shipped_order()
+        {
+            var order = new Order();
+            order.Approve();
+            order.Ship();
+
+            Assert.Throws<ShippedOrdersCannotBeChangedException>(() => order.Approve());
+        }
+
+        [Test]
+        public void Cannot_reject_a_shipped_order()
+        {
+            var order = new Order();
+            order.Approve();
+            order.Ship();
+
+            Assert.Throws<ShippedOrdersCannotBeChangedException>(() => order.Reject());
+        }
+
+        [Test]
+        public void Cannot_reject_an_approved_order()
+        {
+            var order = new Order();
+
+            order.Approve();
+
+            Assert.Throws<ApprovedOrderCannotBeRejectedException>(() => order.Reject());
+        }
+
+        [Test]
+        public void Cannot_ship_a_rejected_order()
+        {
+            var order = new Order();
+
+            order.Reject();
+
+            Assert.Throws<OrderCannotBeShippedException>(() => order.Ship());
+        }
+
+        [Test]
+        public void Cannot_ship_a_shipped_order()
+        {
+            var order = new Order();
+            order.Approve();
+            order.Ship();
+
+            Assert.Throws<OrderCannotBeShippedTwiceException>(() => order.Ship());
+        }
+
+        [Test]
         public void The_status_of_a_new_order_is_Created()
         {
             var order = new Order();
@@ -81,7 +142,7 @@ namespace TellDontAskKata.UnitTests.DomainTests
         public void The_status_of_a_shipped_order_is_Shipped()
         {
             var order = new Order();
-
+            order.Approve();
             order.Ship();
 
             Assert.That(order.Status, Is.EqualTo(OrderStatus.Shipped));

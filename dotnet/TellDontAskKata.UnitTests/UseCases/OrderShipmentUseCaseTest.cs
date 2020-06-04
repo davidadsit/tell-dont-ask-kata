@@ -9,10 +9,8 @@ namespace TellDontAskKata.UnitTests.UseCases
     public class OrderShipmentUseCaseTest
     {
         private TestOrderRepository orderRepository;
-
         private TestShipmentService shipmentService;
-
-        private OrderShipmentUseCase useCase;
+        private ShipOrderWorkflow shipOrderWorkflow;
         private Order initialOrder;
 
         [SetUp]
@@ -20,7 +18,7 @@ namespace TellDontAskKata.UnitTests.UseCases
         {
             orderRepository = new TestOrderRepository();
             shipmentService = new TestShipmentService();
-            useCase = new OrderShipmentUseCase(orderRepository, shipmentService);
+            shipOrderWorkflow = new ShipOrderWorkflow(orderRepository, shipmentService);
 
             initialOrder = new Order (1);
         }
@@ -30,9 +28,7 @@ namespace TellDontAskKata.UnitTests.UseCases
         {
             orderRepository.AddOrder(initialOrder);
 
-            var request = new OrderShipmentRequest {OrderId = 1};
-
-            Assert.Throws<OrderCannotBeShippedException>(() => useCase.Run(request));
+            Assert.Throws<OrderCannotBeShippedException>(() => shipOrderWorkflow.Ship(initialOrder.Id));
             Assert.Null(orderRepository.SavedOrder);
             Assert.Null(shipmentService.ShippedOrder);
         }
@@ -43,9 +39,7 @@ namespace TellDontAskKata.UnitTests.UseCases
             initialOrder.Reject();
             orderRepository.AddOrder(initialOrder);
 
-            var request = new OrderShipmentRequest {OrderId = 1};
-
-            Assert.Throws<OrderCannotBeShippedException>(() => useCase.Run(request));
+            Assert.Throws<OrderCannotBeShippedException>(() => shipOrderWorkflow.Ship(initialOrder.Id));
             Assert.Null(orderRepository.SavedOrder);
             Assert.Null(shipmentService.ShippedOrder);
         }
@@ -56,25 +50,10 @@ namespace TellDontAskKata.UnitTests.UseCases
             initialOrder.Approve();
             orderRepository.AddOrder(initialOrder);
 
-            var request = new OrderShipmentRequest {OrderId = 1};
-
-            useCase.Run(request);
+            shipOrderWorkflow.Ship(initialOrder.Id);
 
             Assert.AreEqual(OrderStatus.Shipped, orderRepository.SavedOrder.Status);
             Assert.AreEqual(shipmentService.ShippedOrder, initialOrder);
-        }
-
-        [Test]
-        public void ShippedOrdersCannotBeShippedAgain()
-        {
-            initialOrder.Ship();
-            orderRepository.AddOrder(initialOrder);
-
-            var request = new OrderShipmentRequest {OrderId = 1};
-
-            Assert.Throws<OrderCannotBeShippedTwiceException>(() => useCase.Run(request));
-            Assert.Null(orderRepository.SavedOrder);
-            Assert.Null(shipmentService.ShippedOrder);
         }
     }
 }
