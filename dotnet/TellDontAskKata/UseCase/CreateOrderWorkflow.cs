@@ -1,31 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TellDontAskKata.Entities;
 using TellDontAskKata.Repository;
 
 namespace TellDontAskKata.UseCase
 {
-    public class OrderCreationUseCase
+    public class CreateOrderWorkflow
     {
         private readonly IOrderRepository orderRepository;
         private readonly IProductCatalog productCatalog;
 
-        public OrderCreationUseCase(IOrderRepository orderRepository,
-            IProductCatalog productCatalog)
+        public CreateOrderWorkflow(IOrderRepository orderRepository, IProductCatalog productCatalog)
         {
             this.orderRepository = orderRepository;
             this.productCatalog = productCatalog;
         }
 
-        public void Run(SellItemsRequest request)
+        public void FromItems(IEnumerable<RequestedItem> items)
         {
             var order = new Order();
 
-            foreach (var itemRequest in request.Requests)
+            foreach (var item in items)
             {
-                var product = productCatalog.GetByName(itemRequest.ProductName);
-                order.AddLineItem(product, itemRequest.Quantity);
+                var product = productCatalog.GetByName(item.ProductName);
+                order.AddLineItem(product, item.Quantity);
             }
+
             orderRepository.Save(order);
         }
     }

@@ -6,7 +6,7 @@ using TellDontAskKata.UseCase;
 
 namespace TellDontAskKata.UnitTests.UseCases
 {
-    public class OrderApprovalUseCaseTest
+    public class OrderApprovalWorkflowTest
     {
         private Order initialOrder;
         private OrderApprovalWorkflow orderApprovalWorkflow;
