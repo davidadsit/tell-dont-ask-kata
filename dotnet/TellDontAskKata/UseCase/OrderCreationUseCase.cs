@@ -24,15 +24,7 @@ namespace TellDontAskKata.UseCase
             foreach (var itemRequest in request.Requests)
             {
                 var product = productCatalog.GetByName(itemRequest.ProductName);
-                if (product == null)
-                {
-                    throw new UnknownProductException();
-                }
-
-
-                var orderItem = new LineItem(product, itemRequest.Quantity);
-
-                order.Items.Add(orderItem);
+                order.AddLineItem(product, itemRequest.Quantity);
             }
             orderRepository.Save(order);
         }

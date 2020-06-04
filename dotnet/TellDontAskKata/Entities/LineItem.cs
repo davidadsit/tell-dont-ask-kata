@@ -10,14 +10,12 @@ namespace TellDontAskKata.Entities
             Quantity = quantity;
         }
 
-        public Product Product { get; }
+        private Product Product { get; }
+        public string ProductName => Product.Name;
         public int Quantity { get; }
-        public decimal SubTotal => Math.Round(Product.UnitCost * Quantity, 2, MidpointRounding.AwayFromZero);
+        public decimal SubTotal => Math.Round(Product.Price * Quantity, 2, MidpointRounding.AwayFromZero);
         public decimal Tax => Math.Round(Product.UnitTax * Quantity, 2, MidpointRounding.AwayFromZero);
-
-        public static LineItem CreateWithProduct(decimal price, int tax, int quantity)
-        {
-            return new LineItem(new Product("", price, new Category("", tax)), quantity);
-        }
+        public decimal Total => SubTotal + Tax;
+    
     }
 }

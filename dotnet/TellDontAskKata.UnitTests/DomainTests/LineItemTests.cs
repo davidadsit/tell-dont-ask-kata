@@ -5,13 +5,18 @@ namespace TellDontAskKata.UnitTests.DomainTests
 {
     public class LineItemTests
     {
-        [TestCase(1, 1, 1)]
-        [TestCase(2, 1, 2)]
-        [TestCase(1, 2, 2)]
-        [TestCase(5, 8, 40)]
-        public void SubTotal_equals_the_quantity_times_the_cost(int quantity, decimal price, decimal expectedSubTotal)
+        private static LineItem CreateWithProduct(decimal price, int tax, int quantity)
         {
-            var lineItem = LineItem.CreateWithProduct(price, 0, quantity);
+            return new LineItem(new Product("", price, new Category("", tax)), quantity);
+        }
+
+        [TestCase(1, 1, 0, 1)]
+        [TestCase(2, 1, 0, 2)]
+        [TestCase(1, 2, 0, 2)]
+        [TestCase(5, 8, 0, 40)]
+        public void SubTotal_equals_the_quantity_times_the_cost(int quantity, decimal price, int tax, decimal expectedSubTotal)
+        {
+            var lineItem = CreateWithProduct(price, tax, quantity);
             Assert.That(lineItem.SubTotal, Is.EqualTo(expectedSubTotal));
         }
 
@@ -21,8 +26,18 @@ namespace TellDontAskKata.UnitTests.DomainTests
         [TestCase(10, 5, 8, 4)]
         public void Tax_equals_the_quantity_times_the_cost_times_the_tax_percentage(int quantity, decimal price, int tax, decimal expectedTax)
         {
-            var lineItem = LineItem.CreateWithProduct(price, tax, quantity);
+            var lineItem = CreateWithProduct(price, tax, quantity);
             Assert.That(lineItem.Tax, Is.EqualTo(expectedTax));
+        }
+
+        [TestCase(10, 1, 10)]
+        [TestCase(10, 2, 10)]
+        [TestCase(10, 1, 20)]
+        [TestCase(10, 5, 8)]
+        public void Total_equals_the_subtotal_plus_tax(int quantity, decimal price, int tax)
+        {
+            var lineItem = CreateWithProduct(price, tax, quantity);
+            Assert.That(lineItem.Total, Is.EqualTo(lineItem.SubTotal + lineItem.Tax));
         }
     }
 }

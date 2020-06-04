@@ -6,17 +6,28 @@ namespace TellDontAskKata.Entities
 {
     public class Order
     {
+        private readonly List<LineItem> lineItems;
+
         public Order(int id = -1)
         {
             Id = id;
+            lineItems = new List<LineItem>();
         }
 
-        public decimal Total => Items.Sum(i => i.SubTotal);
-        public string Currency { get; } = "EUR";
-        public List<LineItem> Items { get; } = new List<LineItem>();
+        public decimal SubTotal => Items.Sum(i => i.SubTotal);
         public decimal Tax => Items.Sum(i => i.Tax);
+        public decimal Total => SubTotal + Tax;
+        public string Currency { get; } = "EUR";
+        public IReadOnlyList<LineItem> Items => lineItems.AsReadOnly();
         public OrderStatus Status { get; private set; } = OrderStatus.Created;
         public int Id { get; }
+
+        public void AddLineItem(Product product, int quantity)
+        {
+            if (product == null) throw new UnknownProductException();
+            
+            lineItems.Add(new LineItem(product, quantity));
+        }
 
         public void Approve()
         {
