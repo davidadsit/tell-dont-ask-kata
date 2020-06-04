@@ -20,6 +20,26 @@ namespace TellDontAskKata.UnitTests.DomainTests
             Assert.That(lineItem.SubTotal, Is.EqualTo(expectedSubTotal));
         }
 
+        [TestCase(1, 2, 3)]
+        [TestCase(5, 8, 13)]
+        [TestCase(8, -5, 3)]
+        public void Increase_quantity_updates_the_quantity(int initialQuantity, int increase, int expected)
+        {
+            var lineItem = CreateWithProduct(10, 0, initialQuantity);
+            lineItem.IncreaseQuantityBy(increase);
+
+            Assert.That(lineItem.Quantity, Is.EqualTo(expected));
+        }
+        
+        [TestCase(5, -8, 0)]
+        public void Quantity_cannot_be_less_than_zero(int initialQuantity, int increase, int expected)
+        {
+            var lineItem = CreateWithProduct(10, 0, initialQuantity);
+            lineItem.IncreaseQuantityBy(increase);
+
+            Assert.That(lineItem.Quantity, Is.EqualTo(expected));
+        }
+
         [TestCase(10, 1, 10, 1)]
         [TestCase(10, 2, 10, 2)]
         [TestCase(10, 1, 20, 2)]

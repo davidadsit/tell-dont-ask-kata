@@ -12,10 +12,14 @@ namespace TellDontAskKata.Entities
 
         private Product Product { get; }
         public string ProductName => Product.Name;
-        public int Quantity { get; }
+        public int Quantity { get; private set; }
         public decimal SubTotal => Math.Round(Product.Price * Quantity, 2, MidpointRounding.AwayFromZero);
         public decimal Tax => Math.Round(Product.UnitTax * Quantity, 2, MidpointRounding.AwayFromZero);
         public decimal Total => SubTotal + Tax;
-    
+
+        public void IncreaseQuantityBy(int quantity)
+        {
+            Quantity = Math.Max(Quantity + quantity, 0);
+        }
     }
 }

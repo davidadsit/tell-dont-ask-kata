@@ -72,6 +72,17 @@ namespace TellDontAskKata.UnitTests.DomainTests
         }
 
         [Test]
+        public void Adding_an_item_multiple_times_increases_the_quantity()
+        {
+            order.AddLineItem(product1, 1);
+            order.AddLineItem(product1, 2);
+            order.AddLineItem(product1, 3);
+
+            Assert.That(order.Items.Count, Is.EqualTo(1));
+            Assert.That(order.Items.Any(i => i.ProductName == product1.Name && i.Quantity == 6));
+        }
+
+        [Test]
         public void An_order_with_items_has_a_subtotal_equal_to_the_sum_of_the_item_totals()
         {
             order.AddLineItem(product1, 1);

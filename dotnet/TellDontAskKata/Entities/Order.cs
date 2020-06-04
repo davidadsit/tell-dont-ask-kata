@@ -25,8 +25,16 @@ namespace TellDontAskKata.Entities
         public void AddLineItem(Product product, int quantity)
         {
             if (product == null) throw new UnknownProductException();
-            
-            lineItems.Add(new LineItem(product, quantity));
+
+            var lineItem = lineItems.FirstOrDefault(i=>i.ProductName == product.Name);
+            if (lineItem == null)
+            {
+                lineItems.Add(new LineItem(product, quantity));
+            }
+            else
+            {
+                lineItem.IncreaseQuantityBy(quantity);
+            }
         }
 
         public void Approve()
