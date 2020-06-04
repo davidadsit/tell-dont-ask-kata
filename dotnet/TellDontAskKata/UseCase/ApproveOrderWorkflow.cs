@@ -1,4 +1,5 @@
 ﻿using TellDontAskKata.Domain;
+using TellDontAskKata.Exceptions;
 using TellDontAskKata.Repository;
 
 namespace TellDontAskKata.UseCase

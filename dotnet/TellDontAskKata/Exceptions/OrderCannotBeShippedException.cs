@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
-namespace TellDontAskKata.Domain
+namespace TellDontAskKata.Exceptions
 {
     public class OrderCannotBeShippedException : Exception
     {

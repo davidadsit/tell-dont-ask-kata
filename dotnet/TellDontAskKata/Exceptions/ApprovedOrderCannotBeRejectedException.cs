@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TellDontAskKata.Domain
+namespace TellDontAskKata.Exceptions
 {
     public class ApprovedOrderCannotBeRejectedException : Exception
     {
