@@ -1,4 +1,4 @@
-﻿namespace TellDontAskKata.Domain
+﻿namespace TellDontAskKata.Entities
 {
     public class Category
     {

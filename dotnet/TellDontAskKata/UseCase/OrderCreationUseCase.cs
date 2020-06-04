@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TellDontAskKata.Domain;
+using TellDontAskKata.Entities;
 using TellDontAskKata.Repository;
 
 namespace TellDontAskKata.UseCase

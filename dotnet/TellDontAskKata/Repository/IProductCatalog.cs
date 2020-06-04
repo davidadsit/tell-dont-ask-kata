@@ -1,4 +1,4 @@
-﻿using TellDontAskKata.Domain;
+﻿using TellDontAskKata.Entities;
 
 namespace TellDontAskKata.Repository
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TellDontAskKata.Domain
+namespace TellDontAskKata.Entities
 {
     public class Product
     {

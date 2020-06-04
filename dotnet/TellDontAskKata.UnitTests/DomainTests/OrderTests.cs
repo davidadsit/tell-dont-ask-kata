@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using TellDontAskKata.Domain;
+using TellDontAskKata.Entities;
 
 namespace TellDontAskKata.UnitTests.DomainTests
 {

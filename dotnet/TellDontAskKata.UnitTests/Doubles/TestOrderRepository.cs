@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TellDontAskKata.Domain;
+using TellDontAskKata.Entities;
 using TellDontAskKata.Repository;
 
-namespace TellDontAskKata.Tests.Doubles
+namespace TellDontAskKata.UnitTests.Doubles
 {
     public class TestOrderRepository : IOrderRepository
     {

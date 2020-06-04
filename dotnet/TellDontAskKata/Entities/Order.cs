@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TellDontAskKata.Domain
+namespace TellDontAskKata.Entities
 {
     public class Order
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using TellDontAskKata.Domain;
+using TellDontAskKata.Entities;
 using TellDontAskKata.Repository;
-using TellDontAskKata.Tests.Doubles;
+using TellDontAskKata.UnitTests.Doubles;
 using TellDontAskKata.UseCase;
 
 namespace TellDontAskKata.UnitTests.UseCases

@@ -1,7 +1,7 @@
-﻿using TellDontAskKata.Domain;
+﻿using TellDontAskKata.Entities;
 using TellDontAskKata.Service;
 
-namespace TellDontAskKata.Tests.Doubles
+namespace TellDontAskKata.UnitTests.Doubles
 {
     public class TestShipmentService : IShipmentService
     {

@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using TellDontAskKata.Domain;
+using TellDontAskKata.Entities;
 using TellDontAskKata.Exceptions;
-using TellDontAskKata.Tests.Doubles;
+using TellDontAskKata.UnitTests.Doubles;
 using TellDontAskKata.UseCase;
 
 namespace TellDontAskKata.UnitTests.UseCases
