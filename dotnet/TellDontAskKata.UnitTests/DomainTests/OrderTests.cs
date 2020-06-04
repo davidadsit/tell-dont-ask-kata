@@ -83,6 +83,16 @@ namespace TellDontAskKata.UnitTests.DomainTests
         }
 
         [Test]
+        public void Do_not_include_items_with_zero_quantity()
+        {
+            order.AddLineItem(product1, 1);
+            order.AddLineItem(product2, 0);
+
+            Assert.That(order.Items.Count, Is.EqualTo(1));
+            Assert.That(order.Items.Any(i => i.ProductName == product1.Name && i.Quantity == 1));
+        }
+
+        [Test]
         public void An_order_with_items_has_a_subtotal_equal_to_the_sum_of_the_item_totals()
         {
             order.AddLineItem(product1, 1);

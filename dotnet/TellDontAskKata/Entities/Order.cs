@@ -18,7 +18,7 @@ namespace TellDontAskKata.Entities
         public decimal Tax => Items.Sum(i => i.Tax);
         public decimal Total => SubTotal + Tax;
         public string Currency { get; } = "EUR";
-        public IReadOnlyList<LineItem> Items => lineItems.AsReadOnly();
+        public IReadOnlyList<LineItem> Items => lineItems.Where(i=>i.Quantity > 0).ToList().AsReadOnly();
         public OrderStatus Status { get; private set; } = OrderStatus.Created;
         public int Id { get; }
 
