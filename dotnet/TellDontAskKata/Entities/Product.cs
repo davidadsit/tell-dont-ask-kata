@@ -14,7 +14,7 @@ namespace TellDontAskKata.Entities
         public string Name { get; }
         public decimal Price { get; }
         public Category Category { get; }
-        public decimal UnitTax => Math.Round(Price * Category.TaxPercentage / 100, 2, MidpointRounding.AwayFromZero);
+        public decimal UnitTax => Math.Round(Price * Category.TaxRate, 2, MidpointRounding.AwayFromZero);
         public decimal UnitCost => Math.Round(Price + UnitTax, 2, MidpointRounding.AwayFromZero);
     }
 }

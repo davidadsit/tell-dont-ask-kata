@@ -11,7 +11,7 @@ namespace TellDontAskKata.UnitTests.DomainTests
         [TestCase(1001, 5.5, 55.06)]
         public void UnitTax_is_price_times_tax_rate(decimal price, decimal taxPercentage, decimal expectedUnitTax)
         {
-            var product = new Product("", price, new Category {TaxPercentage = taxPercentage});
+            var product = new Product("", price, new Category("", taxPercentage));
 
             Assert.That(product.UnitTax, Is.EqualTo(expectedUnitTax));
         }

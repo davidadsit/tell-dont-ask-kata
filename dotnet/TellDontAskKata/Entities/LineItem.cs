@@ -17,7 +17,7 @@ namespace TellDontAskKata.Entities
 
         public static LineItem CreateWithProduct(decimal price, int tax, int quantity)
         {
-            return new LineItem(new Product("", price, new Category {TaxPercentage = tax}), quantity);
+            return new LineItem(new Product("", price, new Category("", tax)), quantity);
         }
     }
 }
